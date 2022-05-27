@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yukidoki.coursera.dao.CourseCardMapper">
+    <select id="getCourseCardByClassId" parameterType="int" resultType="com.yukidoki.coursera.entity.CourseCard">
+        SELECT course.cover AS cover,
+               course.name  AS courseTitle,
+               school.name  AS schoolName,
+               school.logo  AS schoolLogo,
+               class.name   AS className
+        FROM course_info course,
+             unit_info school,
+             class_info class
+        WHERE class.id = #{id}
+          AND course.id = class.course
+          AND school.id = (SELECT unit from unit_course WHERE cid = course.id)
+    </select>
+</mapper>

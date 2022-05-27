@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yukidoki.coursera.dao.KycMapper">
+    <select id="getStudentListByClassCode" parameterType="String" resultType="com.yukidoki.coursera.entity.Kyc">
+        SELECT *
+        FROM kyc_info
+        WHERE id IN (SELECT kid
+                     FROM user_kyc
+                     WHERE uid IN (SELECT uid
+                                   FROM selection_info
+                                   WHERE selection_info.cid = (SELECT id FROM class_info WHERE code = #{code})))
+    </select>
+    <insert id="insertKyc">
+        INSERT INTO kyc_info(name, cid, phone, sid, unit)
+        VALUES (#{name}, #{cid}, #{phone}, #{sid}, #{unit})
+    </insert>
+</mapper>
