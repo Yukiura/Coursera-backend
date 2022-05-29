@@ -30,4 +30,9 @@ public class UserController {
     public ResponseResult login(User user) {
         return loginService.login(user);
     }
+
+    @RequestMapping("/logout")
+    public ResponseResult logout() {
+        return loginService.logout();
+    }
 }
