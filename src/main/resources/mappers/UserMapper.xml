@@ -8,6 +8,11 @@
         FROM sys_user
         WHERE id = #{id}
     </select>
+    <select id="findByUsername" parameterType="String" resultType="com.yukidoki.coursera.entity.User">
+        SELECT *
+        FROM sys_user
+        WHERE username = #{username}
+    </select>
     <insert id="insertUser">
         INSERT INTO sys_user(username, password)
         VALUES (#{username}, #{password})

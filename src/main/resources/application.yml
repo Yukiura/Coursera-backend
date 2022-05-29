@@ -6,6 +6,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/coursera
     username: root
     password: ejH(&*3
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 server:
   port: 80
