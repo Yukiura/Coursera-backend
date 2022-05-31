@@ -1,6 +1,5 @@
 package com.yukidoki.coursera.filter;
 
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.yukidoki.coursera.entity.LoginUser;
 import com.yukidoki.coursera.utils.JwtUtils;
 import com.yukidoki.coursera.utils.RedisCache;

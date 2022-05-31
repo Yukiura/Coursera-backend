@@ -18,6 +18,7 @@ public class LoginUser implements UserDetails {
     private String username;
     private String password;
     private List<String> permissions;
+    private List<GrantedAuthority> authorities;
 
     public LoginUser(User user, List<String> permissions) {
         this.id = user.getId();
@@ -28,7 +29,10 @@ public class LoginUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        if (authorities == null) {
+            authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        }
+        return authorities;
     }
 
     public Integer getId() {
