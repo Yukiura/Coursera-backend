@@ -23,5 +23,6 @@
         <mapper resource="mappers/CourseMapper.xml"/>
         <mapper resource="mappers/MessageMapper.xml"/>
         <mapper resource="mappers/CourseCardMapper.xml"/>
+        <mapper resource="mappers/PermissionMapper.xml"/>
     </mappers>
 </configuration>

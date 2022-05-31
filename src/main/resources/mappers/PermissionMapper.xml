@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yukidoki.coursera.dao.PermissionMapper">
+    <select id="getPermissionListByUserId" parameterType="int" resultType="String">
+        SELECT name
+        FROM sys_permission
+        WHERE id IN (SELECT pid FROM role_permission WHERE rid IN (SELECT rid FROM user_role WHERE uid = #{id}))
+    </select>
+</mapper>

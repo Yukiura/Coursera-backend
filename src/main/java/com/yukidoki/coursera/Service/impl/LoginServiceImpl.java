@@ -9,7 +9,6 @@ import com.yukidoki.coursera.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +24,14 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseResult login(User user) {
-        UsernamePasswordAuthenticationToken authenticationToken = new
-                UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        if (Objects.isNull(authenticate)) {
+        var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        var authentication = authenticationManager.authenticate(authenticationToken);
+        if (Objects.isNull(authentication)) {
             throw new RuntimeException("用户名或密码错误");
         }
         //使用userid生成token
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        String userId = loginUser.getUser().getId().toString();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        String userId = loginUser.getId().toString();
         String jwt = JwtUtils.getJwt(userId);
         //authenticate存入redis
         redisCache.setCacheObject("login:" + userId, loginUser);
@@ -47,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult logout() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        var userId = loginUser.getUser().getId();
+        var userId = loginUser.getId().toString();
         redisCache.deleteObject("login:" + userId);
         return new ResponseResult(200, "登出成功", null);
     }

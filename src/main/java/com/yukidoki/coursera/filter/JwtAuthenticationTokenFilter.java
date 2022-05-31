@@ -1,5 +1,6 @@
 package com.yukidoki.coursera.filter;
 
+import com.alibaba.fastjson.parser.ParserConfig;
 import com.yukidoki.coursera.entity.LoginUser;
 import com.yukidoki.coursera.utils.JwtUtils;
 import com.yukidoki.coursera.utils.RedisCache;
@@ -48,7 +49,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("用户未登录");
         }
         // 获取权限信息封装进Authentication
-        var authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, null);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         // 放行
         filterChain.doFilter(request, response);
