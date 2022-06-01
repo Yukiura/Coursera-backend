@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class SqlSessionUtils {
-
     public static SqlSession getSqlSession() {
         SqlSession sqlSession = null;
         try {

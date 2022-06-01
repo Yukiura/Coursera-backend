@@ -27,12 +27,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseResult login(User user) {
+    public ResponseResult login(@RequestBody User user) {
         return loginService.login(user);
     }
 
     @RequestMapping("/logout")
     public ResponseResult logout() {
         return loginService.logout();
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "gm";
     }
 }

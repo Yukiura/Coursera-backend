@@ -7,4 +7,10 @@
         INSERT INTO message_info(text, time, sender, toclass)
         VALUES (#{text}, #{time}, #{sender}, #{toclass})
     </insert>
+
+    <select id="getMessageListByClassId" parameterType="int" resultType="com.yukidoki.coursera.entity.Message">
+        SELECT *
+        FROM message_info
+        WHERE toclass = #{id}
+    </select>
 </mapper>
