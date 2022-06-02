@@ -1,6 +1,7 @@
 package com.yukidoki.coursera.dao;
 
 import com.yukidoki.coursera.entity.Classroom;
+import com.yukidoki.coursera.entity.Student;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ public interface ClassroomMapper {
 
     Integer getStudentNumByClassId(Integer id);
 
-    Integer getStudentListByClassId(Integer id);
+    List<Student> getStudentListByClassId(Integer id);
 }

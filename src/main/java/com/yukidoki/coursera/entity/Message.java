@@ -6,9 +6,8 @@ import java.util.Date;
 
 @Data
 public class Message {
-    private Integer id;
     private String text;
     private Date time;
-    private Integer sender;
+    private String sender;
     private Integer toclass;
 }

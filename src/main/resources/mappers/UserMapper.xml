@@ -8,13 +8,25 @@
         FROM sys_user
         WHERE id = #{id}
     </select>
+
     <select id="findByUsername" parameterType="String" resultType="com.yukidoki.coursera.entity.User">
         SELECT *
         FROM sys_user
         WHERE username = #{username}
     </select>
+
     <insert id="insertUser">
         INSERT INTO sys_user(username, password)
         VALUES (#{username}, #{password})
     </insert>
+
+    <select id="getStudentByUserId" parameterType="int" resultType="com.yukidoki.coursera.entity.Student">
+        SELECT u.username AS username, k.name AS name, u.avatar AS avatar, k.sid AS sid
+        FROM sys_user as u,
+             kyc_info as k,
+             user_kyc
+        WHERE k.id = user_kyc.kid
+          AND u.id = user_kyc.uid
+          AND u.id = #{id}
+    </select>
 </mapper>

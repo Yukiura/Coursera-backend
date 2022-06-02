@@ -1,9 +1,11 @@
 package com.yukidoki.coursera.ws;
 
 import com.google.gson.Gson;
+import com.yukidoki.coursera.dao.ClassroomMapper;
 import com.yukidoki.coursera.dao.MessageMapper;
 import com.yukidoki.coursera.dao.UserMapper;
 import com.yukidoki.coursera.entity.Message;
+import com.yukidoki.coursera.entity.Student;
 import com.yukidoki.coursera.entity.User;
 import com.yukidoki.coursera.entity.WsMsg;
 import com.yukidoki.coursera.utils.JwtUtils;
@@ -11,6 +13,7 @@ import com.yukidoki.coursera.utils.SqlSessionUtils;
 import com.yukidoki.coursera.utils.WsMsgWrapper;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -21,14 +24,16 @@ import java.util.*;
 @ServerEndpoint(value = "/chat")
 @Component
 public class ChatEndpoint {
-
-    private static final Set<ChatEndpoint> endpointSet = new HashSet<>();
+    private static final Map<String, ChatEndpoint> endpointMap = new HashMap<>();
     private static final UserMapper userMapper = SqlSessionUtils.getSqlSession().getMapper(UserMapper.class);
     private static final MessageMapper messageMapper = SqlSessionUtils.getSqlSession().getMapper(MessageMapper.class);
+    private static final ClassroomMapper classroomMapper = SqlSessionUtils.getSqlSession().getMapper(ClassroomMapper.class);
+    private static final Gson gson = new Gson();
     private Session session;
-    private Integer userId;
     private String username;
     private Integer classId;
+    private Student student;
+    private List<Student> classMates;
 
     @OnOpen
     public void onOpen(Session session) {
@@ -37,22 +42,21 @@ public class ChatEndpoint {
 
     @OnMessage
     public void onMessage(String msg, Session session) throws IOException {
-        Gson gson = new Gson();
         WsMsg wsMsg = gson.fromJson(msg, WsMsg.class);
         String msgType = wsMsg.getType();
         switch (msgType) {
             case "VERIFY":  // 学生进入直播教室需要先验证身份
                 String token = (String) wsMsg.getData();
                 // 解析token
-                this.userId = Integer.parseInt(JwtUtils.parseJwt(token));
-                User user = userMapper.findById(this.userId);
+                int userId = Integer.parseInt(JwtUtils.parseJwt(token));
+                User user = userMapper.findById(userId);
+                this.student = userMapper.getStudentByUserId(userId);
                 if (user == null) {
                     throw new RuntimeException();
                 }
-                this.userId = user.getId();
                 this.username = user.getUsername();
                 this.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.verifySuccessMsg(username)));
-                endpointSet.add(this);
+                endpointMap.put(this.username, this);
                 break;
             case "CLASS":   // 学生刚进入直播教室时前端需传递班级号
                 this.classId = Integer.parseInt((String) wsMsg.getData());
@@ -60,36 +64,48 @@ public class ChatEndpoint {
                 List<Message> history = messageMapper.getMessageListByClassId(this.classId);
                 this.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.historyMsg(history, this.username)));
                 // 获取在线学生名单
-                List<String> studentList = new ArrayList<>();
-                for (ChatEndpoint endpoint : endpointSet) {
-                    if (Objects.equals(endpoint.classId, this.classId)) {
-                        studentList.add(endpoint.username);
-                    }
+                this.classMates = classroomMapper.getStudentListByClassId(this.classId);
+                for (Student stu : classMates) {
+                    stu.setOnline(endpointMap.get(stu.getUsername()) != null);
                 }
                 // 向同班同学广播在线学生名单
-                for (ChatEndpoint endpoint : endpointSet) {
+                for (ChatEndpoint endpoint : endpointMap.values()) {
                     if (Objects.equals(endpoint.classId, this.classId)) {
-                        endpoint.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.studentListMsg(studentList, endpoint.username)));
+                        endpoint.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.studentListMsg(this.classMates, endpoint.username)));
                     }
                 }
                 break;
             case "TEXT":    // 学生在聊天板块中发布消息
                 // 将消息封装为Message对象
-                Message msgToInsert = new Message();
+                Message msgObject = new Message();
                 String text = (String) wsMsg.getData();
-                msgToInsert.setSender(this.userId);
-                msgToInsert.setText(text);
-                msgToInsert.setToclass(this.classId);
-                msgToInsert.setTime(new Date());
+                msgObject.setSender(this.student.getName());
+                msgObject.setText(text);
+                msgObject.setToclass(this.classId);
+                msgObject.setTime(new Date());
                 // 将消息放入数据库
-                messageMapper.insertMessage(msgToInsert);
+                messageMapper.insertMessage(msgObject);
                 // 向同班同学广播消息
-                for (ChatEndpoint endpoint : endpointSet) {
+                for (ChatEndpoint endpoint : endpointMap.values()) {
                     if (Objects.equals(endpoint.classId, this.classId)) {
-                        endpoint.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.textMsg(text, this.username, endpoint.username)));
+                        endpoint.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.textMsg(msgObject, this.username, endpoint.username)));
                     }
                 }
                 break;
+        }
+    }
+
+    @OnClose
+    public void onClose(Session session) throws IOException {
+        endpointMap.remove(this.username);
+        // 向同班同学广播在线学生名单
+        for (Student stu : classMates) {
+            stu.setOnline(endpointMap.get(stu.getUsername()) != null);
+        }
+        for (ChatEndpoint endpoint : endpointMap.values()) {
+            if (Objects.equals(endpoint.classId, this.classId)) {
+                endpoint.session.getBasicRemote().sendText(gson.toJson(WsMsgWrapper.studentListMsg(this.classMates, endpoint.username)));
+            }
         }
     }
 }
