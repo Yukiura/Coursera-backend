@@ -16,8 +16,8 @@
     </select>
 
     <insert id="insertUser">
-        INSERT INTO sys_user(username, password)
-        VALUES (#{username}, #{password})
+        INSERT INTO sys_user(id, username, password, avatar, bio)
+        VALUES (#{id}, #{username}, #{password}, #{avatar}, #{bio})
     </insert>
 
     <select id="getStudentByUserId" parameterType="int" resultType="com.yukidoki.coursera.entity.Student">
@@ -28,5 +28,27 @@
         WHERE k.id = user_kyc.kid
           AND u.id = user_kyc.uid
           AND u.id = #{id}
+    </select>
+
+    <select id="getAvatarByUserId" parameterType="int" resultType="String">
+        SELECT avatar
+        FROM sys_user
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertUserRole">
+        INSERT INTO user_role(uid, rid)
+        VALUES (#{uid}, #{rid})
+    </insert>
+
+    <insert id="insertUserKyc">
+        INSERT INTO user_kyc(uid, kid)
+        VALUES (#{uid}, #{kid})
+    </insert>
+
+    <select id="getRoleIdByRoleName" parameterType="String" resultType="int">
+        SELECT id
+        FROM sys_role
+        WHERE name = #{name}
     </select>
 </mapper>

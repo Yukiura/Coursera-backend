@@ -3,6 +3,7 @@ package com.yukidoki.coursera.entity;
 import lombok.*;
 
 @Data
+@AllArgsConstructor
 public class User {
     private Integer id;
     private String username;

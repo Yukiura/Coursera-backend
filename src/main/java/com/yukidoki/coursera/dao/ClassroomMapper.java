@@ -11,4 +11,6 @@ public interface ClassroomMapper {
     Integer getStudentNumByClassId(Integer id);
 
     List<Student> getStudentListByClassId(Integer id);
+
+    List<String> getClassListByUserId(Integer id);
 }

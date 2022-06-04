@@ -12,8 +12,9 @@
                                    FROM selection_info
                                    WHERE selection_info.cid = (SELECT id FROM class_info WHERE code = #{code})))
     </select>
+
     <insert id="insertKyc">
-        INSERT INTO kyc_info(name, cid, phone, sid, unit)
-        VALUES (#{name}, #{cid}, #{phone}, #{sid}, #{unit})
+        INSERT INTO kyc_info(id, name, cid, phone, sid, unit)
+        VALUES (#{id}, #{name}, #{cid}, #{phone}, #{sid}, #{unit})
     </insert>
 </mapper>

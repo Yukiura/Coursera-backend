@@ -11,4 +11,12 @@ public interface UserMapper {
     Integer insertUser(User user);
 
     Student getStudentByUserId(Integer id);
+
+    String getAvatarByUserId(Integer id);
+
+    Integer insertUserRole(Integer uid, Integer rid);
+
+    Integer insertUserKyc(Integer uid, Integer kid);
+
+    Integer getRoleIdByRoleName(String name);
 }

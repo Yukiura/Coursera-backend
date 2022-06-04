@@ -7,4 +7,15 @@
         INSERT INTO unit_info(name, address, logo)
         VALUES (#{name}, #{address}, #{logo})
     </insert>
+
+    <select id="getUnitList" resultType="String">
+        SELECT name
+        FROM unit_info
+    </select>
+
+    <select id="getUnitIdByName" parameterType="String" resultType="int">
+        SELECT id
+        FROM unit_info
+        WHERE name = #{name}
+    </select>
 </mapper>
