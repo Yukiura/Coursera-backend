@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -65,5 +67,11 @@ public class UserController {
     public String getAvatarById() {
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userMapper.getAvatarByUserId(user.getId());
+    }
+
+    @GetMapping("/role")
+    public List<String> role() {
+        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userMapper.getRoleListByUserId(user.getId());
     }
 }

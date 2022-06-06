@@ -3,6 +3,8 @@ package com.yukidoki.coursera.dao;
 import com.yukidoki.coursera.entity.Student;
 import com.yukidoki.coursera.entity.User;
 
+import java.util.List;
+
 public interface UserMapper {
     User findById(int id);
 
@@ -19,4 +21,6 @@ public interface UserMapper {
     Integer insertUserKyc(Integer uid, Integer kid);
 
     Integer getRoleIdByRoleName(String name);
+
+    List<String> getRoleListByUserId(Integer id);
 }

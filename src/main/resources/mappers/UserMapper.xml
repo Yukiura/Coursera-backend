@@ -51,4 +51,10 @@
         FROM sys_role
         WHERE name = #{name}
     </select>
+
+    <select id="getRoleListByUserId" parameterType="Integer" resultType="String">
+        SELECT name
+        FROM sys_role
+        WHERE id IN (SELECT rid FROM user_role WHERE uid = #{id})
+    </select>
 </mapper>

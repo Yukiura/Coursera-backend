@@ -7,4 +7,21 @@
         INSERT INTO course_info(name, cover, code, description)
         VALUES (#{name}, #{cover}, #{code}, #{description})
     </insert>
+
+    <select id="getSearchResultListByCourseName" parameterType="String"
+            resultType="com.yukidoki.coursera.entity.SearchResult">
+        SELECT c.id          AS cid,
+               c.name        AS name,
+               c.cover       AS cover,
+               c.description AS description,
+               u.id          AS sid,
+               u.name        AS school,
+               u.logo        AS logo
+        FROM course_info AS c,
+             unit_info AS u,
+             unit_course AS uc
+        WHERE uc.cid = c.id
+          AND uc.unit = u.id
+          AND c.name LIKE concat('%', #{name}, '%')
+    </select>
 </mapper>
