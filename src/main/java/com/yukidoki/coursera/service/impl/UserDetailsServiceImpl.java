@@ -1,4 +1,4 @@
-package com.yukidoki.coursera.Service.impl;
+package com.yukidoki.coursera.service.impl;
 
 import com.yukidoki.coursera.dao.PermissionMapper;
 import com.yukidoki.coursera.dao.UserMapper;

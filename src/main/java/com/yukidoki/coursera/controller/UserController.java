@@ -1,6 +1,6 @@
 package com.yukidoki.coursera.controller;
 
-import com.yukidoki.coursera.Service.LoginService;
+import com.yukidoki.coursera.service.LoginService;
 import com.yukidoki.coursera.dao.KycMapper;
 import com.yukidoki.coursera.dao.UnitMapper;
 import com.yukidoki.coursera.dao.UserMapper;

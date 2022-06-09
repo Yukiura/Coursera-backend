@@ -34,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 允许匿名访问
-                .antMatchers("/user/login", "/user/hello", "/chat", "/user/register", "/unit/all", "/course/search").anonymous()
+                .antMatchers("/user/login", "/user/hello", "/chat", "/user/register", "/unit/all",
+                        "/course/search", "/live/connect", "/live/close", "/live/publish", "/live/unpublish",
+                        "/live/play", "/live/stop").anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
 

@@ -23,4 +23,42 @@
           AND u.id = user_kyc.uid
           AND user_kyc.uid IN (SELECT uid from selection_info WHERE cid = #{id})
     </select>
+
+    <select id="verifySelectionInfo" parameterType="int" resultType="com.yukidoki.coursera.entity.LiveVerificationBody">
+        SELECT cid, uid
+        FROM selection_info
+        WHERE cid = #{cid}
+          AND uid = #{uid}
+    </select>
+
+    <select id="verifyTeachingInfo" parameterType="int" resultType="com.yukidoki.coursera.entity.LiveVerificationBody">
+        SELECT cid, uid
+        FROM teaching_info
+        WHERE cid = #{cid}
+          AND uid = #{uid}
+    </select>
+
+    <select id="getSelectionListByUserId" parameterType="int" resultType="int">
+        SELECT cid
+        FROM selection_info
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="getTeachingListByUserId" parameterType="int" resultType="int">
+        SELECT cid
+        FROM teaching_info
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="getClassroomLiveById" parameterType="int" resultType="int">
+        SELECT live
+        FROM class_info
+        WHERE id = #{id}
+    </select>
+
+    <update id="setClassroomLiveById">
+        UPDATE class_info
+        SET live=#{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -1,4 +1,4 @@
-package com.yukidoki.coursera.Service;
+package com.yukidoki.coursera.service;
 
 import com.yukidoki.coursera.entity.ResponseResult;
 import com.yukidoki.coursera.entity.User;

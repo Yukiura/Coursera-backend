@@ -59,6 +59,7 @@ public class ChatEndpoint {
                 endpointMap.put(this.username, this);
                 break;
             case "CLASS":   // 学生刚进入直播教室时前端需传递班级号
+                System.out.println("班级ID: " + wsMsg.getData());
                 this.classId = Integer.parseInt((String) wsMsg.getData());
                 // 向新加入直播教室的同学发送聊天历史信息
                 List<Message> history = messageMapper.getMessageListByClassId(this.classId);

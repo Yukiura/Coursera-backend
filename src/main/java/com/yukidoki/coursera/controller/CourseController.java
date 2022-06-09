@@ -16,9 +16,9 @@ public class CourseController {
     private final CourseCardMapper courseCardMapper = SqlSessionUtils.getSqlSession().getMapper(CourseCardMapper.class);
     private final CourseMapper courseMapper = SqlSessionUtils.getSqlSession().getMapper(CourseMapper.class);
 
-    @GetMapping("/card/{classId}")
+    @GetMapping("/card")
     @PreAuthorize("hasAuthority('course:info:card')")
-    public CourseCard getCourseCardByClassId(@PathVariable("classId") Integer classId) {
+    public CourseCard getCourseCardByClassId(@RequestParam("classId") Integer classId) {
         return courseCardMapper.getCourseCardByClassId(classId);
     }
 

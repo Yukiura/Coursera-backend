@@ -1,6 +1,6 @@
-package com.yukidoki.coursera.Service.impl;
+package com.yukidoki.coursera.service.impl;
 
-import com.yukidoki.coursera.Service.LoginService;
+import com.yukidoki.coursera.service.LoginService;
 import com.yukidoki.coursera.entity.LoginUser;
 import com.yukidoki.coursera.entity.ResponseResult;
 import com.yukidoki.coursera.entity.User;
