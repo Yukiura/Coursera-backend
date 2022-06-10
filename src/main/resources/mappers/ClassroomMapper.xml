@@ -61,4 +61,15 @@
         SET live=#{status}
         WHERE id = #{id}
     </update>
+
+    <select id="getClassroomListByCourseId" parameterType="int" resultType="com.yukidoki.coursera.entity.Classroom">
+        SELECT *
+        FROM class_info
+        WHERE course = #{cid}
+    </select>
+
+    <insert id="select" parameterType="int">
+        INSERT INTO selection_info(uid, cid)
+        VALUES (#{uid}, #{cid})
+    </insert>
 </mapper>

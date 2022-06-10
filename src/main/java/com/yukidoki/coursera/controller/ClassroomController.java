@@ -2,6 +2,8 @@ package com.yukidoki.coursera.controller;
 
 import com.yukidoki.coursera.dao.ClassroomMapper;
 import com.yukidoki.coursera.dao.UserMapper;
+import com.yukidoki.coursera.entity.Classroom;
+import com.yukidoki.coursera.entity.LiveVerificationBody;
 import com.yukidoki.coursera.entity.LoginUser;
 import com.yukidoki.coursera.entity.Student;
 import com.yukidoki.coursera.utils.SqlSessionUtils;
@@ -47,5 +49,23 @@ public class ClassroomController {
     @GetMapping("/status")
     public Integer status(@RequestParam("classId") Integer classId) {
         return classroomMapper.getClassroomLiveById(classId);
+    }
+
+    @GetMapping("/course")
+    public List<Classroom> course(@RequestParam("courseId") Integer courseId) {
+        return classroomMapper.getClassroomListByCourseId(courseId);
+    }
+
+    @GetMapping("/verify")
+    public Boolean verify(@RequestParam("classroomId") Integer classroomId) {
+        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LiveVerificationBody result = classroomMapper.verifySelectionInfo(user.getId(), classroomId);
+        return result != null;
+    }
+
+    @PostMapping("/select")
+    public int select(@RequestParam("classroomId") Integer classroomId) {
+        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return classroomMapper.select(user.getId(), classroomId);
     }
 }

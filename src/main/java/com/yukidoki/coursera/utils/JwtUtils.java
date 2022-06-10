@@ -11,7 +11,7 @@ import static io.jsonwebtoken.security.Keys.secretKeyFor;
 
 public class JwtUtils {
     // 有效期
-    private static final Long JWT_TTL = 60 * 60 * 1000L;
+    private static final Long JWT_TTL = 60 * 60 * 60 * 1000L;
     // 密钥
     private static final SecretKey SECRET_KEY = secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -35,14 +35,6 @@ public class JwtUtils {
                 .signWith(SECRET_KEY)
                 .setExpiration(expDate)
                 .compact();
-    }
-
-    public static String getJwt(String id, String subject, Long ttlMillis) {
-        return create(id, subject, ttlMillis);
-    }
-
-    public static String getJwt(String subject, Long ttlMillis) {
-        return create(getUUID(), subject, ttlMillis);
     }
 
     public static String getJwt(String subject) {

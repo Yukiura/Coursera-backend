@@ -26,4 +26,8 @@ public interface ClassroomMapper {
     Integer getClassroomLiveById(Integer id);
 
     Integer setClassroomLiveById(Integer id, Integer status);
+
+    List<Classroom> getClassroomListByCourseId(Integer cid);
+
+    Integer select(Integer uid, Integer cid);
 }
