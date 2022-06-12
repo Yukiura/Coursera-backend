@@ -1,6 +1,6 @@
 package com.yukidoki.coursera.dao;
 
-import com.yukidoki.coursera.entity.Student;
+import com.yukidoki.coursera.entity.EndpointUser;
 import com.yukidoki.coursera.entity.User;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public interface UserMapper {
 
     Integer insertUser(User user);
 
-    Student getStudentByUserId(Integer id);
+    EndpointUser getEndpointUserByUserId(Integer id);
 
     String getAvatarByUserId(Integer id);
 

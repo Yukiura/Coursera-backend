@@ -1,4 +1,4 @@
-package com.yukidoki.coursera.entity;
+package com.yukidoki.coursera.utils.wsUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +12,4 @@ public class WsMsg<T> {
     String type;
     // 消息数据
     private T data;
-    // 消息发送者
-    private String sender;
-    // 消息接收者
-    private String receiver;
 }

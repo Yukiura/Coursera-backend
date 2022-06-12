@@ -20,8 +20,8 @@
         VALUES (#{id}, #{username}, #{password}, #{avatar}, #{bio})
     </insert>
 
-    <select id="getStudentByUserId" parameterType="int" resultType="com.yukidoki.coursera.entity.Student">
-        SELECT u.username AS username, k.name AS name, u.avatar AS avatar, k.sid AS sid
+    <select id="getEndpointUserByUserId" parameterType="int" resultType="com.yukidoki.coursera.entity.EndpointUser">
+        SELECT u.id AS userId, u.username AS username, k.name AS name, u.avatar AS avatar, k.sid AS sid
         FROM sys_user as u,
              kyc_info as k,
              user_kyc

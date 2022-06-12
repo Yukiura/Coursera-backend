@@ -3,25 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yukidoki.coursera.dao.ClassroomMapper">
-    <insert id="insertClassroom">
-        INSERT INTO class_info(name, begin, end, code, course)
-        VALUES (#{name}, #{begin}, #{end}, #{code}, #{course})
-    </insert>
-
     <select id="getStudentNumByClassId" parameterType="int" resultType="int">
         SELECT COUNT(uid)
         FROM selection_info
         WHERE cid = #{id}
-    </select>
-
-    <select id="getStudentListByClassId" parameterType="int" resultType="com.yukidoki.coursera.entity.Student">
-        SELECT u.username AS username, k.name AS name, u.avatar AS avatar, k.sid AS sid
-        FROM sys_user as u,
-             kyc_info as k,
-             user_kyc
-        WHERE k.id = user_kyc.kid
-          AND u.id = user_kyc.uid
-          AND user_kyc.uid IN (SELECT uid from selection_info WHERE cid = #{id})
     </select>
 
     <select id="verifySelectionInfo" parameterType="int" resultType="com.yukidoki.coursera.entity.LiveVerificationBody">

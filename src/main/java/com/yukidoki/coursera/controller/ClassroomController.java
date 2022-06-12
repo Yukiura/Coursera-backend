@@ -5,7 +5,6 @@ import com.yukidoki.coursera.dao.UserMapper;
 import com.yukidoki.coursera.entity.Classroom;
 import com.yukidoki.coursera.entity.LiveVerificationBody;
 import com.yukidoki.coursera.entity.LoginUser;
-import com.yukidoki.coursera.entity.Student;
 import com.yukidoki.coursera.utils.SqlSessionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,12 +24,6 @@ public class ClassroomController {
     @PreAuthorize("hasAuthority('class:info:num')")
     public Integer getStudentNumByClassId(@RequestParam("classId") Integer classId) {
         return classroomMapper.getStudentNumByClassId(classId);
-    }
-
-    @GetMapping("/student/list")
-    @PreAuthorize("hasAuthority('class:info:studentList')")
-    public List<Student> getStudentListByClassId(@RequestParam("classId") Integer classId) {
-        return classroomMapper.getStudentListByClassId(classId);
     }
 
     @GetMapping("/list")
